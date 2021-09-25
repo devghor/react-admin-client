@@ -1,23 +1,11 @@
+import { Add, Delete, Edit } from "@mui/icons-material";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import Grid from "@material-ui/core/Grid";
 import { ReactNode } from "react";
 
-import MUIDataTable from "mui-datatables";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-});
 
 const columns = [
   {
@@ -72,7 +60,7 @@ const columns = [
               }
               aria-label="delete"
             >
-              <EditIcon fontSize="small" />
+              <Edit fontSize="small" />
             </IconButton>
             <IconButton
               onClick={() =>
@@ -82,7 +70,7 @@ const columns = [
               }
               aria-label="delete"
             >
-              <DeleteIcon fontSize="small" />
+              <Delete fontSize="small" />
             </IconButton>
           </div>
         );
@@ -103,11 +91,10 @@ interface Props {
 }
 
 const Dashboard: React.FC = (props: Props) => {
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Box color="text.primary" clone>
+    <div>
+      <Box color="text.primary">
         <Typography variant="h5">Users</Typography>
       </Box>
       <Grid
@@ -116,26 +103,14 @@ const Dashboard: React.FC = (props: Props) => {
         style={{ paddingTop: "5px", paddingBottom: "5px" }}
       >
         <Grid item xs={12} md={12} style={{ textAlign: "right" }}>
-          <Button variant="text" color="secondary" startIcon={<AddIcon />}>
+          <Button variant="text" color="secondary" startIcon={<Add />}>
             Add
           </Button>
         </Grid>
       </Grid>
       <Grid container>
         <Grid item xs={12} md={12}>
-          <MUIDataTable
-            options={{
-              download:false,
-              print:false,
-              elevation: 1,
-              filterType: "checkbox",
-              setTableProps: () => ({
-                size: "small",
-              }),
-            }}
-            data={data}
-            columns={columns}
-          />{" "}
+         
         </Grid>
       </Grid>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { ThemeProvider } from "@mui/material";
 import theme from "./styles/theme";
 import Router from "./router";
 import { I18nProvider, LOCALES } from "./plugins/i18n";

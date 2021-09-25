@@ -1,10 +1,10 @@
 import React from "react";
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { Box, IconButton } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import { Dialog } from "@mui/material";
+import {DialogContent} from "@mui/material";
+import { DialogTitle } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 const CustomizedDialogTitle = ({ children, onClose, ...other }) => {
   return (
@@ -18,7 +18,7 @@ const CustomizedDialogTitle = ({ children, onClose, ...other }) => {
           onClick={onClose}
           aria-label="close"
         >
-          <CloseIcon />
+          <Close />
         </IconButton>
       </Box>
     </DialogTitle>

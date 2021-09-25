@@ -1,26 +1,13 @@
 import React, { Children } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { axios } from "../../../plugins";
 
 import toast from "react-hot-toast";
-import CloseIcon from "@material-ui/icons/Close";
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormHelperText, IconButton, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Box } from "@mui/system";
+import { Close } from "@mui/icons-material";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -45,7 +32,7 @@ const CustomizedDialogTitle = ({ children, onClose, ...other }) => {
           onClick={onClose}
           aria-label="close"
         >
-          <CloseIcon />
+          <Close />
         </IconButton>
       </Box>
     </DialogTitle>

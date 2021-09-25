@@ -1,15 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-
-import MUIDataTable from "mui-datatables";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 import { axios } from "../../../plugins";
 
 import { useDispatch } from "react-redux";
@@ -17,15 +6,11 @@ import { toggleLoading } from "../../../redux/loaderSlice";
 import UserCreateForm from "./UserCreateForm";
 import UserEditForm from "./UserEditForm";
 import BaseDialog from "../../../components/dialog/BaseDialog";
-
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-});
+import { Button, Container, Grid, IconButton, Typography } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Box } from "@mui/system";
 
 const Users: React.FC = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [users, setUsers] = React.useState([]);
@@ -85,13 +70,13 @@ const Users: React.FC = () => {
                 onClick={() => setEditItem(users[dataIndex])}
                 aria-label="delete"
               >
-                <EditIcon fontSize="small" />
+                <Edit fontSize="small" />
               </IconButton>
               <IconButton
                 onClick={() => console.log(users[dataIndex])}
                 aria-label="delete"
               >
-                <DeleteIcon fontSize="small" />
+                <Delete fontSize="small" />
               </IconButton>
             </div>
           );
@@ -135,56 +120,44 @@ const Users: React.FC = () => {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Box color="text.primary" clone>
-        <Typography variant="h5">Users</Typography>
-      </Box>
-      <Grid
-        container
-        alignItems={"center"}
-        style={{ paddingTop: "5px", paddingBottom: "5px" }}
-      >
-        <Grid item xs={12} md={12} style={{ textAlign: "right" }}>
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={() => setOpenCreateDialog(true)}
-          >
-            Add
-          </Button>
+    <div>
+      <Container>
+        <Box color="text.primary" sx={{ marginTop: "5px" }}>
+          <Typography variant="h5">Users</Typography>
+        </Box>
+        <Grid
+          container
+          alignItems={"center"}
+          style={{ paddingTop: "5px", paddingBottom: "5px" }}
+        >
+          <Grid item xs={12} md={12} style={{ textAlign: "right" }}>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => setOpenCreateDialog(true)}
+            >
+              Add
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-      <BaseDialog
-        title="Create User"
-        open={openCreateDialog}
-        setOpen={setOpenCreateDialog}
-      >
-        <UserCreateForm roles={roles} onItemCreated={handleNewItem} />
-      </BaseDialog>
-      <BaseDialog
-        title="Create User"
-        open={openEditDialog}
-        setOpen={setOpenEditDialog}
-      >
-        <UserEditForm  item={editItem} />
-      </BaseDialog>
-      <Grid container>
-        <Grid item xs={12} md={12}>
-          <MUIDataTable
-            options={{
-              download: false,
-              print: false,
-              elevation: 1,
-              filterType: "checkbox",
-              setTableProps: () => ({
-                size: "small",
-              }),
-            }}
-            data={users}
-            columns={columns}
-          />{" "}
+        <BaseDialog
+          title="Create User"
+          open={openCreateDialog}
+          setOpen={setOpenCreateDialog}
+        >
+          <UserCreateForm roles={roles} onItemCreated={handleNewItem} />
+        </BaseDialog>
+        <BaseDialog
+          title="Create User"
+          open={openEditDialog}
+          setOpen={setOpenEditDialog}
+        >
+          <UserEditForm item={editItem} />
+        </BaseDialog>
+        <Grid container>
+          <Grid item xs={12} md={12}></Grid>
         </Grid>
-      </Grid>
+      </Container>
     </div>
   );
 };

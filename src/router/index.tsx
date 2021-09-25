@@ -8,7 +8,7 @@ import AuthRoute from "./components/AuthRoute";
 
 import * as layout from "../components/layouts";
 import * as page from "../pages";
-
+import { DefaultLayout,DashboardLayout } from "../layouts";
 import { pathValue } from "../values";
 
 const Router: React.FC = () => {
@@ -19,37 +19,37 @@ const Router: React.FC = () => {
           exact
           path={pathValue.HOME}
           page={page.Home}
-          layout={layout.DefaultLayout}
+          layout={DefaultLayout}
         ></PublicRoute>
         <AuthRoute
           exact
           path={pathValue.LOGIN}
           page={page.Login}
-          layout={layout.DefaultLayout}
+          layout={DefaultLayout}
         ></AuthRoute>
         <AdminRoute
           exact
           path={pathValue.DASHBOARD}
           page={page.Dashboard}
-          layout={layout.DashboardLayout}
+          layout={DashboardLayout}
         ></AdminRoute>
         <AdminRoute
           exact
           path={pathValue.USERS}
           page={page.Users}
-          layout={layout.DashboardLayout}
+          layout={DashboardLayout}
         ></AdminRoute>
         <AdminRoute
           exact
           path={pathValue.ROLES}
           page={page.Roles}
-          layout={layout.DashboardLayout}
+          layout={DashboardLayout}
         ></AdminRoute>
         <AdminRoute
           exact
           path={pathValue.PERMISSIONS}
           page={page.Permissions}
-          layout={layout.DashboardLayout}
+          layout={DashboardLayout}
         ></AdminRoute>
       </Switch>
     </BrowserRouter>
