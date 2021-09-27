@@ -6,25 +6,48 @@ import { toggleLoading } from "../../../redux/loaderSlice";
 import UserCreateForm from "./UserCreateForm";
 import UserEditForm from "./UserEditForm";
 import BaseDialog from "../../../components/dialog/BaseDialog";
-import { Button, Container, Grid, IconButton, Typography } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  TableCell,
+  TableRow,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Delete, Edit, People, Search } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { DataTable, PageHeader } from "../../../components";
+import { IRole, IUser } from "../../../types";
 
+interface IUserListItem {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  roleName: string;
+  roleId: number;
+}
 const Users: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [users, setUsers] = React.useState([]);
-  const [editItem, setEditItem] = React.useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    role: { id: 0 },
-  });
-  const [roles, setRoles] = React.useState([]);
+  const [users, setUsers] = React.useState<IUserListItem[] | []>([]);
+  const [editItem, setEditItem] = React.useState<IUser>({} as IUser);
+  const [roles, setRoles] = React.useState<IRole[] | []>([]);
   const [openCreateDialog, setOpenCreateDialog] = React.useState(false);
   const [openEditDialog, setOpenEditDialog] = React.useState(false);
 
   const columns = [
+    {
+      name: "id",
+      label: "Id",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
     {
       name: "firstName",
       label: "Firs tName",
@@ -58,7 +81,8 @@ const Users: React.FC = () => {
       },
     },
     {
-      name: "Actions",
+      name: "actions",
+      label: "Actions",
       options: {
         filter: false,
         sort: false,
@@ -67,7 +91,10 @@ const Users: React.FC = () => {
           return (
             <div style={{ display: "flex" }}>
               <IconButton
-                onClick={() => setEditItem(users[dataIndex])}
+                onClick={() => {
+                  setOpenEditDialog(true);
+                  console.log(users[dataIndex]);
+                }}
                 aria-label="delete"
               >
                 <Edit fontSize="small" />
@@ -86,6 +113,19 @@ const Users: React.FC = () => {
   ];
 
   const handleNewItem = (item) => {
+    let user: IUserListItem = {
+      id: item.id,
+      firstName: item.firstName,
+      lastName: item.lastName,
+      email: item.email,
+      roleName: item.role.displayName,
+      roleId: item.role.id,
+    };
+    setUsers([user, ...users]);
+    setOpenCreateDialog(false);
+  };
+
+  const handleUpdatedItem = (item) => {
     console.log(item);
   };
 
@@ -93,13 +133,13 @@ const Users: React.FC = () => {
     try {
       dispatch(toggleLoading());
       const { data } = await axios.get("users");
-      let users = data.data.map((item) => ({
+      let users: IUserListItem[] = data.data.map((item) => ({
         id: item.id,
         firstName: item.firstName,
         lastName: item.lastName,
         email: item.email,
         roleName: item.role.displayName,
-        role: item.role,
+        roleId: item.role.id,
       }));
       setUsers(users);
     } catch (error) {
@@ -120,45 +160,64 @@ const Users: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <Container>
-        <Box color="text.primary" sx={{ marginTop: "5px" }}>
-          <Typography variant="h5">Users</Typography>
+    <Box>
+      <PageHeader
+        title="Users"
+        subTitle="All user information"
+        icon={<People />}
+      />
+
+      <Paper>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 2,
+          }}
+        >
+          <TextField
+            size="small"
+            id="outlined-basic"
+            variant="outlined"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => setOpenCreateDialog(true)}
+          >
+            Add
+          </Button>
         </Box>
-        <Grid
-          container
-          alignItems={"center"}
-          style={{ paddingTop: "5px", paddingBottom: "5px" }}
-        >
-          <Grid item xs={12} md={12} style={{ textAlign: "right" }}>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => setOpenCreateDialog(true)}
-            >
-              Add
-            </Button>
-          </Grid>
-        </Grid>
-        <BaseDialog
-          title="Create User"
-          open={openCreateDialog}
-          setOpen={setOpenCreateDialog}
-        >
-          <UserCreateForm roles={roles} onItemCreated={handleNewItem} />
-        </BaseDialog>
-        <BaseDialog
-          title="Create User"
-          open={openEditDialog}
-          setOpen={setOpenEditDialog}
-        >
-          <UserEditForm item={editItem} />
-        </BaseDialog>
-        <Grid container>
-          <Grid item xs={12} md={12}></Grid>
-        </Grid>
-      </Container>
-    </div>
+        <DataTable columns={columns} data={users}></DataTable>
+      </Paper>
+      <BaseDialog
+        title="Create User"
+        open={openCreateDialog}
+        setOpen={setOpenCreateDialog}
+      >
+        <UserCreateForm roles={roles} onItemCreated={handleNewItem} />
+      </BaseDialog>
+      <BaseDialog
+        title="Edit User"
+        open={openEditDialog}
+        setOpen={setOpenEditDialog}
+      >
+        <UserEditForm
+          roles={roles}
+          item={editItem}
+          onItemUpdated={handleUpdatedItem}
+        />
+      </BaseDialog>
+    </Box>
   );
 };
 
