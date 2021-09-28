@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { IUser } from "../../../types";
+import { isTemplateTail } from "typescript";
+import { iteratorSymbol } from "@reduxjs/toolkit/node_modules/immer/dist/internal";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -25,7 +27,6 @@ const validationSchema = yup.object({
     .string()
     .email("Enter a valid email")
     .required("Email is required"),
-  password: yup.string().required("Password is required"),
   roleId: yup.string().required("Role is required"),
 });
 
@@ -37,23 +38,23 @@ type Props = {
 };
 
 const UserEditForm: React.FC<Props> = (props) => {
+  const { item } = props;
   const [loading, setLoading] = React.useState(false);
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      roleId: "",
+      firstName: item.firstName,
+      lastName: item.lastName,
+      email: item.email,
+      roleId: item.roleId,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       setLoading(true);
       axios
-        .post("/users", values)
+        .put(`/users/${item.id}`, { ...item, ...values })
         .then(({ data }) => {
-          toast.success("Succesfully created a user.");
+          toast.success("Succesfully updated the user.");
           props.onItemUpdated(data.data);
         })
         .catch(({ response }) => {

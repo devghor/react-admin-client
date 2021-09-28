@@ -21,6 +21,7 @@ import { Delete, Edit, People, Search } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { DataTable, PageHeader } from "../../../components";
 import { IRole, IUser } from "../../../types";
+import toast from "react-hot-toast";
 
 interface IUserListItem {
   id: number;
@@ -93,6 +94,7 @@ const Users: React.FC = () => {
               <IconButton
                 onClick={() => {
                   setOpenEditDialog(true);
+                  setEditItem({ ...users[dataIndex] });
                   console.log(users[dataIndex]);
                 }}
                 aria-label="delete"
@@ -100,7 +102,23 @@ const Users: React.FC = () => {
                 <Edit fontSize="small" />
               </IconButton>
               <IconButton
-                onClick={() => console.log(users[dataIndex])}
+                onClick={async () => {
+                  if (window.confirm("Are you sure?")) {
+                    let item = users[dataIndex];
+                    try {
+                      dispatch(toggleLoading());
+                      const { data } = await axios.delete(`/users/${item.id}`);
+                      toast.success("Succesfully deleted the user.");
+
+                      users.splice(dataIndex, 1);
+                      setUsers([...users]);
+                    } catch (error) {
+                      console.log(error);
+                    } finally {
+                      dispatch(toggleLoading());
+                    }
+                  }
+                }}
                 aria-label="delete"
               >
                 <Delete fontSize="small" />
@@ -126,7 +144,18 @@ const Users: React.FC = () => {
   };
 
   const handleUpdatedItem = (item) => {
-    console.log(item);
+    let userItem: IUserListItem = {
+      id: item.id,
+      firstName: item.firstName,
+      lastName: item.lastName,
+      email: item.email,
+      roleName: item.role.displayName,
+      roleId: item.role.id,
+    };
+    let index = users.findIndex((user) => user.id == userItem.id);
+    users[index] = { ...userItem };
+    setUsers([...users]);
+    setOpenEditDialog(false);
   };
 
   const getUsers = async () => {
