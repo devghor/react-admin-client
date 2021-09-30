@@ -1,11 +1,10 @@
 import { Add, Delete, Edit } from "@mui/icons-material";
-import { Button, Grid, IconButton, Typography } from "@mui/material";
+import { Button, Container, Grid, IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-
+import { Helmet } from "react-helmet";
 import { ReactNode } from "react";
-
-
+import { TopicCard } from "../../../components";
 
 const columns = [
   {
@@ -91,29 +90,47 @@ interface Props {
 }
 
 const Dashboard: React.FC = (props: Props) => {
-
   return (
-    <div>
-      <Box color="text.primary">
-        <Typography variant="h5">Users</Typography>
-      </Box>
-      <Grid
-        container
-        alignItems="center"
-        style={{ paddingTop: "5px", paddingBottom: "5px" }}
+    <>
+      <Helmet>
+        <title>Dashboard | Admin portal</title>
+      </Helmet>
+      <Box
+        sx={{
+          backgroundColor: "background.default",
+          minHeight: "100%",
+        }}
       >
-        <Grid item xs={12} md={12} style={{ textAlign: "right" }}>
-          <Button variant="text" color="secondary" startIcon={<Add />}>
-            Add
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid container>
-        <Grid item xs={12} md={12}>
-         
-        </Grid>
-      </Grid>
-    </div>
+        <Container maxWidth={false}>
+          <Grid container spacing={3}>
+            <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={8} md={12} xl={9} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={4} md={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={4} md={6} xl={3} xs={12}>
+              <TopicCard />
+            </Grid>
+            <Grid item lg={8} md={12} xl={9} xs={12}>
+              <TopicCard />
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    </>
   );
 };
 

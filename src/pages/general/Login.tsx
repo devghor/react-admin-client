@@ -8,6 +8,7 @@ import { login } from "../../redux/authSlice";
 
 import toast from "react-hot-toast";
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material";
+import { Box, height } from "@mui/system";
 
 const validationSchema = yup.object({
   email: yup
@@ -49,9 +50,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <Box sx={{display:'flex', justifyContent:'center',alignItems:'center',height: '100vh'}}>
       <form onSubmit={formik.handleSubmit}>
-        <Card>
+        <Card sx={{maxWidth: "400px"}}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               Login
@@ -90,7 +91,7 @@ const Login: React.FC = () => {
           </CardContent>
         </Card>
       </form>
-    </div>
+    </Box>
   );
 };
 

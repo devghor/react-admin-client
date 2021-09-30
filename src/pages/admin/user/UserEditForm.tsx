@@ -17,8 +17,6 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { IUser } from "../../../types";
-import { isTemplateTail } from "typescript";
-import { iteratorSymbol } from "@reduxjs/toolkit/node_modules/immer/dist/internal";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("First name is required"),

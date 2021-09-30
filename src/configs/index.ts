@@ -1,1 +1,1 @@
-export { default as navConfig } from "./navConfig";
+export { default as menuConfig } from "./menuConfig";
