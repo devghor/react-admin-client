@@ -2,7 +2,7 @@ import React, { Children } from "react";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { axios } from "../../../plugins";
+import { axios } from "../../../api";
 
 import toast from "react-hot-toast";
 import {
@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { endpoint } from "../../../api";
 
 const validationSchema = yup.object({
   firstName: yup.string().required("First name is required"),
@@ -49,7 +50,7 @@ const UserCreateForm: React.FC<Props> = (props) => {
     onSubmit: (values) => {
       setLoading(true);
       axios
-        .post("/users", values)
+        .post(endpoint.USERS_APPEND, values)
         .then(({ data }) => {
           toast.success("Succesfully created a user.");
           props.onItemCreated(data.data);

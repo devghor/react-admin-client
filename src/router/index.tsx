@@ -18,8 +18,8 @@ const Router: React.FC = () => {
         <PublicRoute
           exact
           path={pathValue.HOME}
-          page={page.Home}
-          layout={DefaultLayout}
+          page={page.Dashboard}
+          layout={DashboardLayout}
         ></PublicRoute>
         <AuthRoute
           exact

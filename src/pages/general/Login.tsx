@@ -1,7 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { axios } from "../../plugins";
 import { useDispatch } from "react-redux";
 import { toggleLoading } from "../../redux/loaderSlice";
 import { login } from "../../redux/authSlice";
@@ -9,6 +8,7 @@ import { login } from "../../redux/authSlice";
 import toast from "react-hot-toast";
 import { Button, Card, CardContent, TextField, Typography } from "@mui/material";
 import { Box, height } from "@mui/system";
+import { endpoint,axios } from "../../api";
 
 const validationSchema = yup.object({
   email: yup
@@ -38,7 +38,7 @@ const Login: React.FC = () => {
   const doLogin = async (payload) => {
     try {
       dispatch(toggleLoading());
-      let { data } = await axios.post("/login", payload);
+      let { data } = await axios.post(endpoint.AUTH_LOGIN, payload);
       dispatch(login(data))
       console.log(data);
     } catch (error) {
