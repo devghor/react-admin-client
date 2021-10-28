@@ -12,7 +12,7 @@ const PageHeader = (props: IProps) => {
   const { title, subTitle, icon } = props;
   return (
     <div>
-      <Paper sx={{ display: "flex", alignItems: "center", p:1,mb:5 }}>
+      <Paper sx={{ display: "flex", alignItems: "center", p:1,mb:5,width:"100%" }}>
         <Paper sx={{p: 1}}>{icon}</Paper>
         <Box sx={{ml:2}}>
           <Typography component="div" variant="h5">

@@ -1,7 +1,13 @@
-# Getting Started with Create React App
+# React Admin Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is starter kit for admin dashboard for general purpose.
 
+***Warnings:*** This project is currently dev stage. Feel free to fork
+
+Here is a list of the packages installed:
+
+- **[MUI](https://github.com/mui-org/material-ui)**
+- **[Axios](https://github.com/axios/axios)**
 ## Available Scripts
 
 In the project directory, you can run:
