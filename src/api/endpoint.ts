@@ -19,3 +19,6 @@ export const USERS_READ = (id) => `/users/${id}`;
 export const USERS_EDIT = (id) => `/users/${id}`;
 export const USERS_APPEND = "/users";
 export const USERS_DELETE = (id) => `/users/${id}`;
+
+// dashboard
+export const DASHBOARD_DETAILS = '/dashboard-details';
