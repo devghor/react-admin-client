@@ -1,5 +1,6 @@
 // Auth
 export const AUTH_LOGIN = "/login";
+export const AUTH_LOGOUT = "/logout";
 
 // roles
 export const ROLES_BROWSE = "/roles";

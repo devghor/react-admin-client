@@ -1,11 +1,12 @@
 import {
   Add,
+  Delete,
   Edit,
   HdrPlus,
   PlusOneSharp,
   SettingsAccessibility,
 } from "@mui/icons-material";
-import { Button, Container } from "@mui/material";
+import { Button, Container, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Helmet } from "react-helmet";
@@ -112,10 +113,25 @@ const Roles = () => {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <div style={{ textAlign: "center" }}>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                sx={{ mr: 2 }}
+              <IconButton
+                aria-label="edit"
+                onClick={() => {
+                  const { id, name, displayName, roleId } =
+                    permissions[rowIndex];
+                  setEditItem({
+                    id: id,
+                    name: name,
+                    displayName: displayName,
+                    roleId: roleId,
+                  });
+                  setOpenEditDialog(true);
+                }}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+
+              <IconButton
+                aria-label="delete"
                 onClick={() => {
                   if (window.confirm("Are you sure?")) {
                     const { id } = permissions[rowIndex];
@@ -137,20 +153,8 @@ const Roles = () => {
                   }
                 }}
               >
-                Delete
-              </Button>
-
-              <Button
-                variant="outlined"
-                startIcon={<Edit />}
-                onClick={() => {
-                  const { id, name, displayName,roleId } = permissions[rowIndex];
-                  setEditItem({ id: id, name: name, displayName: displayName, roleId: roleId });
-                  setOpenEditDialog(true);
-                }}
-              >
-                Edit
-              </Button>
+                <Delete fontSize="small" />
+              </IconButton>
             </div>
           );
         },
@@ -183,8 +187,7 @@ const Roles = () => {
           <div style={{ height: 300, width: "100%" }}>
             <Box>
               <Button
-                sx={{ ml: "2px" }}
-                variant="outlined"
+                variant="text"
                 startIcon={<Add />}
                 onClick={() => setOpenCreateDialog(true)}
               >
@@ -196,17 +199,23 @@ const Roles = () => {
               open={openCreateDialog}
               setOpen={setOpenCreateDialog}
             >
-              <PermissionCreateForm roles={roles}  onItemCreated={handleItemCreated} />
+              <PermissionCreateForm
+                roles={roles}
+                onItemCreated={handleItemCreated}
+              />
             </BaseDialog>
             <BaseDialog
-            title="Edit Role"
-            open={openEditDialog}
-            setOpen={setOpenEditDialog}
-          >
-            <PermissionEditFrom roles={roles} item={editItem} onItemUpdated={handleItemUpdate} />
-          </BaseDialog>
+              title="Edit Role"
+              open={openEditDialog}
+              setOpen={setOpenEditDialog}
+            >
+              <PermissionEditFrom
+                roles={roles}
+                item={editItem}
+                onItemUpdated={handleItemUpdate}
+              />
+            </BaseDialog>
             <MuiTable
-              title={"Permissions"}
               data={permissions}
               columns={columns}
               options={{

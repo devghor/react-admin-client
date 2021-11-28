@@ -19,9 +19,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Delete, Edit, People, Search } from "@mui/icons-material";
+import { Add, Delete, Edit, People, Search } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { DataTable, PageHeader } from "../../../components";
+import { DataTable, MuiTable, PageHeader } from "../../../components";
 import { IRole, IUser } from "../../../types";
 import toast from "react-hot-toast";
 
@@ -108,8 +108,10 @@ const Users: React.FC = () => {
                   if (window.confirm("Are you sure?")) {
                     let item = users[dataIndex];
                     try {
-                      dispatch(toggleLoading());  
-                      const { data } = await axios.delete(endpoint.USERS_DELETE(item.id));
+                      dispatch(toggleLoading());
+                      const { data } = await axios.delete(
+                        endpoint.USERS_DELETE(item.id)
+                      );
                       toast.success("Succesfully deleted the user.");
 
                       users.splice(dataIndex, 1);
@@ -212,33 +214,29 @@ const Users: React.FC = () => {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
                 alignItems: "center",
-                mb: 2,
               }}
             >
-              <TextField
-                size="small"
-                id="outlined-basic"
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
               <Button
                 color="primary"
-                variant="outlined"
+                variant="text"
+                startIcon={<Add />}
                 onClick={() => setOpenCreateDialog(true)}
               >
-                Add
+                New
               </Button>
             </Box>
-            <DataTable columns={columns} data={users}></DataTable>
+            <MuiTable
+              columns={columns}
+              data={users}
+              options={{
+                filterType: "dropdown",
+                filter: true,
+                download: false,
+                print: false,
+                selectableRows: "none",
+              }}
+            />
           </Paper>
           <BaseDialog
             title="Create User"

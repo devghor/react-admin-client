@@ -90,7 +90,9 @@ export default function ResponsiveDrawer(props: Props) {
   return (
     <div>
       <CssBaseline />
-      <AppBar position="fixed">
+      <AppBar
+        position="static"
+      >
         <Toolbar>
           <IconButton
             color="inherit"

@@ -1,11 +1,12 @@
 import {
   Add,
+  Delete,
   Edit,
   HdrPlus,
   PlusOneSharp,
   SettingsAccessibility,
 } from "@mui/icons-material";
-import { Button, Container } from "@mui/material";
+import { Button, Container, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Helmet } from "react-helmet";
@@ -99,10 +100,18 @@ const Roles = () => {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <div style={{ textAlign: "center" }}>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                sx={{ mr: 2 }}
+              <IconButton
+                aria-label="edit"
+                onClick={() => {
+                  const { id, name, displayName } = roles[rowIndex];
+                  setEditItem({ id: id, name: name, displayName: displayName });
+                  setOpenEditDialog(true);
+                }}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+              <IconButton
+                aria-label="delete"
                 onClick={() => {
                   if (window.confirm("Are you sure?")) {
                     const { id } = roles[rowIndex];
@@ -124,20 +133,8 @@ const Roles = () => {
                   }
                 }}
               >
-                Delete
-              </Button>
-
-              <Button
-                variant="outlined"
-                startIcon={<Edit />}
-                onClick={() => {
-                  const { id, name, displayName } = roles[rowIndex];
-                  setEditItem({ id: id, name: name, displayName: displayName });
-                  setOpenEditDialog(true);
-                }}
-              >
-                Edit
-              </Button>
+                <Delete fontSize="small" />
+              </IconButton>
             </div>
           );
         },
@@ -168,10 +165,10 @@ const Roles = () => {
             icon={<SettingsAccessibility />}
           />
           <div style={{ height: 300, width: "100%" }}>
-            <Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <Button
-                sx={{ ml: "2px" }}
-                variant="outlined"
+                color="primary"
+                variant="text"
                 startIcon={<Add />}
                 onClick={() => setOpenCreateDialog(true)}
               >
@@ -179,7 +176,6 @@ const Roles = () => {
               </Button>
             </Box>
             <MuiTable
-              title={"Roles"}
               data={roles}
               columns={columns}
               options={{

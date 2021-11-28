@@ -16,8 +16,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { menuConfig } from "../../configs";
-
-const drawerWidth = 240;
+import { Menu, MenuItem } from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
+import { axios, endpoint } from "../../api";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/authSlice";
 
 interface Props {
   /**
@@ -31,10 +34,40 @@ interface Props {
 export default function ResponsiveDrawer(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [desktopOpen, setDesktopOpen] = React.useState(true);
+  const [drawerWidth, setDrawerWidth] = React.useState(240);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const dispatch = useDispatch();
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (key) => {
+    setAnchorEl(null);
+    if (key == "logout") {
+      axios.post(endpoint.AUTH_LOGOUT).then(({data})=>{
+        dispatch(logout());
+      });
+    }
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleDesktopDrawer = () => {
+    console.log("Des drawer");
+    setDesktopOpen(!desktopOpen);
+  };
+
+  React.useEffect(() => {
+    if (desktopOpen) {
+      setDrawerWidth(240);
+    } else {
+      setDrawerWidth(0);
+    }
+  }, [desktopOpen]);
 
   const drawer = (
     <div>
@@ -42,7 +75,7 @@ export default function ResponsiveDrawer(props: Props) {
       <Divider />
       <List>
         {menuConfig.primaryMenu.map(({ label, icon: Icon, href }) => (
-          <ListItem button component={Link}  key={href} to={href}>
+          <ListItem button component={Link} key={href} to={href}>
             <ListItemIcon>
               <Icon />
             </ListItemIcon>
@@ -62,8 +95,7 @@ export default function ResponsiveDrawer(props: Props) {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar>
@@ -72,13 +104,51 @@ export default function ResponsiveDrawer(props: Props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDesktopDrawer}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" sx={{ flexGrow: 1 }}>
             Admin Portal
           </Typography>
+          <div>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleMenu}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => handleClose("logout")}>Logout</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
       <Box
@@ -87,7 +157,7 @@ export default function ResponsiveDrawer(props: Props) {
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
+        <Drawer 
           container={container}
           variant="temporary"
           open={mobileOpen}
@@ -106,7 +176,8 @@ export default function ResponsiveDrawer(props: Props) {
           {drawer}
         </Drawer>
         <Drawer
-          variant="permanent"
+          open={desktopOpen}
+          variant="persistent"
           sx={{
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
@@ -114,7 +185,6 @@ export default function ResponsiveDrawer(props: Props) {
               width: drawerWidth,
             },
           }}
-          open
         >
           {drawer}
         </Drawer>
