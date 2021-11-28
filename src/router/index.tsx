@@ -8,25 +8,26 @@ import AuthRoute from "./components/AuthRoute";
 
 import * as layout from "../components/layouts";
 import * as page from "../pages";
-import { DefaultLayout,DashboardLayout } from "../layouts";
+import { DefaultLayout, DashboardLayout } from "../layouts";
 import { pathValue } from "../values";
 
 const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <PublicRoute
-          exact
-          path={pathValue.HOME}
-          page={page.Dashboard}
-          layout={DashboardLayout}
-        ></PublicRoute>
         <AuthRoute
           exact
           path={pathValue.LOGIN}
           page={page.Login}
           layout={DefaultLayout}
         ></AuthRoute>
+
+        <AdminRoute
+          exact
+          path={pathValue.HOME}
+          page={page.Dashboard}
+          layout={DashboardLayout}
+        ></AdminRoute>
         <AdminRoute
           exact
           path={pathValue.DASHBOARD}
